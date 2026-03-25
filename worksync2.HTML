@@ -1,0 +1,767 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;WorkSync — Team Workspace&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Fraunces:ital,wght@0,300;0,600;1,300&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ============================================================</p>
+<p class="p1"><span class="Apple-converted-space">  </span>🔥 FIREBASE SETUP INSTRUCTIONS</p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>1. Go to https://console.firebase.google.com</p>
+<p class="p1"><span class="Apple-converted-space">  </span>2. Click "Add project" → name it "worksync" → Continue</p>
+<p class="p1"><span class="Apple-converted-space">  </span>3. Disable Google Analytics (optional) → Create project</p>
+<p class="p1"><span class="Apple-converted-space">  </span>4. Click "&lt;/&gt;" (Web app) → register app → copy your firebaseConfig</p>
+<p class="p1"><span class="Apple-converted-space">  </span>5. REPLACE the firebaseConfig below with YOUR values</p>
+<p class="p1"><span class="Apple-converted-space">  </span>6. In Firebase Console → Build → Firestore Database → Create database</p>
+<p class="p1"><span class="Apple-converted-space">     </span>→ Start in TEST MODE → choose a region → Enable</p>
+<p class="p1"><span class="Apple-converted-space">  </span>7. In Firebase Console → Build → Authentication → Get started</p>
+<p class="p1"><span class="Apple-converted-space">     </span>→ Email/Password → Enable → Save</p>
+<p class="p1"><span class="Apple-converted-space">  </span>============================================================ --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;link rel="stylesheet" href="style.css"&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- LOADING --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="loadingScreen"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="brand-logo" style="width:52px;height:52px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;"&gt;⚡&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="spinner"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="loading-text"&gt;Connecting to WorkSync...&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- SETUP BANNER --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="setupBanner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>⚠️ Firebase not configured yet. Replace the firebaseConfig in the &amp;lt;script&amp;gt; section with your own credentials.</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="https://console.firebase.google.com" target="_blank" style="color:#fff;margin-left:8px;text-decoration:underline;"&gt;Open Firebase Console →&lt;/a&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- LOGIN VIEW --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="view" id="loginView"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="login-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="brand"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-logo"&gt;⚡&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-name"&gt;Work&lt;span&gt;Sync&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-sub"&gt;Real-time Team Task Platform&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="login-tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="login-tab active" onclick="switchLoginTab('login',this)"&gt;Sign In&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="login-tab" onclick="switchLoginTab('register',this)"&gt;Register&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">```</p>
+<p class="p1">&lt;div id="loginForm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Email&lt;/label&gt;&lt;input type="email" id="loginEmail" placeholder="your@email.com" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Password&lt;/label&gt;&lt;input type="password" id="loginPass" placeholder="Your password" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn-primary" id="loginBtn" onclick="doLogin()"&gt;Sign In →&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="login-hint"&gt;All tasks sync live across every device 🔥&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="registerForm" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Full Name&lt;/label&gt;&lt;input type="text" id="regName" placeholder="Your full name" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Email&lt;/label&gt;&lt;input type="email" id="regEmail" placeholder="your@email.com" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;WhatsApp Number&lt;/label&gt;&lt;input type="tel" id="regPhone" placeholder="+91 98765 43210" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Role / Designation&lt;/label&gt;&lt;input type="text" id="regRole" placeholder="e.g. Sales Executive" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="field"&gt;&lt;label&gt;Password (min 6 chars)&lt;/label&gt;&lt;input type="password" id="regPass" placeholder="Create a password" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn-primary" id="registerBtn" onclick="doRegister()"&gt;Create Account →&lt;/button&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">```</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- APP VIEW --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="view" id="appView"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="topbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="topbar-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="topbar-brand"&gt;Work&lt;span&gt;Sync&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="nav-tab active" onclick="switchTab('dashboard',this)"&gt;📊 Dashboard&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="nav-tab" onclick="switchTab('tasks',this)"&gt;📋 Tasks&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="nav-tab" onclick="switchTab('team',this)"&gt;👥 Team&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="nav-tab" onclick="switchTab('activity',this)"&gt;🕐 Activity&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="topbar-right"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="sync-badge"&gt;🔥 Live Sync&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="session-badge"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="session-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span id="sessionTimer"&gt;0:00&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="avatar c0" id="topbarAvatar"&gt;?&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span style="font-size:0.82rem;font-weight:600;" id="topbarName"&gt;—&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-logout" onclick="doLogout()"&gt;Sign Out&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Mobile nav --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);padding:0 16px;overflow-x:auto;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-tab active" style="white-space:nowrap;" onclick="switchTab('dashboard',this)"&gt;📊 Home&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-tab" style="white-space:nowrap;" onclick="switchTab('tasks',this)"&gt;📋 Tasks&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-tab" style="white-space:nowrap;" onclick="switchTab('team',this)"&gt;👥 Team&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-tab" style="white-space:nowrap;" onclick="switchTab('activity',this)"&gt;🕐 Log&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="content"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">```</p>
+<p class="p1">&lt;!-- DASHBOARD --&gt;</p>
+<p class="p1">&lt;div class="tab-content active" id="tab-dashboard"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="page-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="page-title"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Good &lt;span id="greetingTime"&gt;day&lt;/span&gt;! 👋</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;small id="greetingName"&gt;Welcome back&lt;/small&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-size:0.78rem;color:var(--muted);" id="currentDate"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="stats-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card blue"&gt;&lt;span class="stat-icon"&gt;📋&lt;/span&gt;&lt;div class="stat-value" id="s-total"&gt;0&lt;/div&gt;&lt;div class="stat-label"&gt;Total Tasks&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card red"&gt;&lt;span class="stat-icon"&gt;🔥&lt;/span&gt;&lt;div class="stat-value" id="s-urgent"&gt;0&lt;/div&gt;&lt;div class="stat-label"&gt;Urgent&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card yellow"&gt;&lt;span class="stat-icon"&gt;⏳&lt;/span&gt;&lt;div class="stat-value" id="s-pending"&gt;0&lt;/div&gt;&lt;div class="stat-label"&gt;In Progress&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card green"&gt;&lt;span class="stat-icon"&gt;✅&lt;/span&gt;&lt;div class="stat-value" id="s-done"&gt;0&lt;/div&gt;&lt;div class="stat-label"&gt;Completed&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="main-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card" style="margin-bottom:20px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="font-weight:700;font-size:0.9rem;margin-bottom:14px;"&gt;🔥 My Urgent Tasks&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="myUrgentTasks"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="font-weight:700;font-size:0.9rem;margin-bottom:14px;"&gt;📋 My Tasks&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="myRecentTasks"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="assign-form" style="margin-bottom:20px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-header"&gt;⚡ Quick Assign Task&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="form-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="f-group"&gt;&lt;label&gt;Task Title&lt;/label&gt;&lt;input type="text" id="q-title" placeholder="What needs to be done?" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="f-group"&gt;&lt;label&gt;Assign To&lt;/label&gt;&lt;select id="q-assignee"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="f-group"&gt;&lt;label&gt;Priority&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="q-priority"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="urgent"&gt;🔴 Urgent&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="medium" selected&gt;🟡 Medium&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;option value="low"&gt;🟢 Low&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="f-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="f-group"&gt;&lt;label&gt;Due Date&lt;/label&gt;&lt;input type="date" id="q-date" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="f-group"&gt;&lt;label&gt;Time&lt;/label&gt;&lt;input type="time" id="q-time" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="f-group"&gt;&lt;label&gt;Note&lt;/label&gt;&lt;textarea id="q-note" placeholder="Optional instructions..."&gt;&lt;/textarea&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="btn-assign" id="assignBtn" onclick="assignTask(false)"&gt;Assign + WhatsApp Alert 💬&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="font-weight:700;font-size:0.9rem;margin-bottom:14px;"&gt;🟢 Team Online&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="onlineTeamList"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- TASKS --&gt;</p>
+<p class="p1">&lt;div class="tab-content" id="tab-tasks"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="page-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="page-title"&gt;All Tasks &lt;small&gt;Live team task board&lt;/small&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn-primary" style="width:auto;padding:10px 20px;font-size:0.82rem;" onclick="openAssignModal()"&gt;+ Assign Task&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="filter-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="filter-btn active" onclick="filterAllTasks('all',this)"&gt;All&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="filter-btn" onclick="filterAllTasks('mine',this)"&gt;Mine&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="filter-btn" onclick="filterAllTasks('urgent',this)"&gt;Urgent&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="filter-btn" onclick="filterAllTasks('pending',this)"&gt;Pending&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="filter-btn" onclick="filterAllTasks('done',this)"&gt;Done&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="allTasksList"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- TEAM --&gt;</p>
+<p class="p1">&lt;div class="tab-content" id="tab-team"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="page-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="page-title"&gt;Team Members &lt;small id="teamCount"&gt;Loading...&lt;/small&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="team-grid" id="teamGrid"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ACTIVITY --&gt;</p>
+<p class="p1">&lt;div class="tab-content" id="tab-activity"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="page-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="page-title"&gt;Activity Log &lt;small&gt;Sessions &amp; alerts&lt;/small&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" style="margin-bottom:20px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-weight:700;font-size:0.9rem;margin-bottom:16px;"&gt;📊 Login Sessions&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="overflow-x:auto;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;table class="session-table"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Member&lt;/th&gt;&lt;th&gt;Login&lt;/th&gt;&lt;th&gt;Duration&lt;/th&gt;&lt;th&gt;Date&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;tbody id="sessionTableBody"&gt;&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-weight:700;font-size:0.9rem;margin-bottom:16px;"&gt;🔔 Alert History&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="activity-list" id="activityList"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">```</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ASSIGN MODAL --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="modal-overlay" id="assignModal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-header"&gt;Assign New Task &lt;button class="close-x" onclick="closeAssignModal()"&gt;✕&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-group"&gt;&lt;label&gt;Task Title&lt;/label&gt;&lt;input type="text" id="m-title" placeholder="What needs to be done?" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-group"&gt;&lt;label&gt;Description&lt;/label&gt;&lt;textarea id="m-desc" placeholder="Add details..."&gt;&lt;/textarea&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-group"&gt;&lt;label&gt;Assign To&lt;/label&gt;&lt;select id="m-assignee"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;&lt;label&gt;Priority&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;select id="m-priority"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="urgent"&gt;🔴 Urgent&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="medium" selected&gt;🟡 Medium&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="low"&gt;🟢 Low&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;&lt;label&gt;Alert Via&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;select id="m-channel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="whatsapp"&gt;💬 WhatsApp&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="sms"&gt;📲 SMS&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;&lt;label&gt;Due Date&lt;/label&gt;&lt;input type="date" id="m-date" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;&lt;label&gt;Due Time&lt;/label&gt;&lt;input type="time" id="m-time" /&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-assign" onclick="assignTask(true)"&gt;Assign + Send Alert 💬&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="toast-stack" id="toastStack"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ============================================================</p>
+<p class="p1"><span class="Apple-converted-space">  </span>FIREBASE SDK</p>
+<p class="p1">============================================================ --&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script type="module"&gt;</p>
+<p class="p1">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";</p>
+<p class="p1">import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";</p>
+<p class="p1">import { getFirestore, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc,</p>
+<p class="p1"><span class="Apple-converted-space">  </span>collection, query, orderBy, onSnapshot, serverTimestamp, where }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// 🔥 REPLACE THIS WITH YOUR FIREBASE CONFIG</p>
+<p class="p1">// Get it from: Firebase Console → Project Settings → Your Apps</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">const firebaseConfig = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>apiKey:<span class="Apple-converted-space">            </span>"YOUR_API_KEY",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>authDomain:<span class="Apple-converted-space">        </span>"YOUR_PROJECT_ID.firebaseapp.com",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>projectId: <span class="Apple-converted-space">        </span>"YOUR_PROJECT_ID",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>storageBucket: <span class="Apple-converted-space">    </span>"YOUR_PROJECT_ID.appspot.com",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>messagingSenderId: "YOUR_SENDER_ID",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>appId: <span class="Apple-converted-space">            </span>"YOUR_APP_ID"</p>
+<p class="p1">};</p>
+<p class="p1">// ============================================================</p>
+<p class="p2"><br></p>
+<p class="p1">const COLORS = ['c0','c1','c2','c3','c4','c5'];</p>
+<p class="p1">let app, auth, db;</p>
+<p class="p1">let currentUser = null;</p>
+<p class="p1">let loginTime <span class="Apple-converted-space">  </span>= null;</p>
+<p class="p1">let sessionInterval = null;</p>
+<p class="p1">let taskFilter<span class="Apple-converted-space">  </span>= 'all';</p>
+<p class="p1">let allTasks<span class="Apple-converted-space">    </span>= [];</p>
+<p class="p1">let allMembers<span class="Apple-converted-space">  </span>= [];</p>
+<p class="p1">let unsubTasks<span class="Apple-converted-space">  </span>= null;</p>
+<p class="p1">let unsubMembers = null;</p>
+<p class="p2"><br></p>
+<p class="p1">// Check if config is real</p>
+<p class="p1">function isConfigured() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return firebaseConfig.apiKey &amp;&amp; firebaseConfig.apiKey !== "YOUR_API_KEY";</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// INIT</p>
+<p class="p1">try {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!isConfigured()) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('setupBanner').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('loadingScreen').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('loginView').classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>disableButtons();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>app<span class="Apple-converted-space">  </span>= initializeApp(firebaseConfig);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>auth = getAuth(app);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>db <span class="Apple-converted-space">  </span>= getFirestore(app);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>onAuthStateChanged(auth, async (user) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loadingScreen').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (user) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const snap = await getDoc(doc(db, 'users', user.uid));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (snap.exists()) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>currentUser = { uid: user.uid, ...snap.data() };</p>
+<p class="p1"><span class="Apple-converted-space">          </span>loginTime = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>await updateDoc(doc(db, 'users', user.uid), { online: true, lastSeen: serverTimestamp() });</p>
+<p class="p1"><span class="Apple-converted-space">          </span>showApp();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>showLogin();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>showLogin();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('loadingScreen').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('setupBanner').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('loginView').classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>disableButtons();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>console.error(e);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function disableButtons() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.btn-primary,.btn-assign').forEach(b =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>b.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>b.title = 'Configure Firebase first';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// AUTH</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">window.switchLoginTab = (tab, el) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.login-tab').forEach(t =&gt; t.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('loginForm').style.display<span class="Apple-converted-space">    </span>= tab === 'login'<span class="Apple-converted-space">    </span>? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.doLogin = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!isConfigured()) { toast('Configure Firebase first!', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const email = document.getElementById('loginEmail').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pass<span class="Apple-converted-space">  </span>= document.getElementById('loginPass').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!email || !pass) { toast('Enter email and password', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = document.getElementById('loginBtn');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>btn.disabled = true; btn.textContent = 'Signing in...';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await signInWithEmailAndPassword(auth, email, pass);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(e.code === 'auth/invalid-credential' ? 'Wrong email or password' : e.message, 'error');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.disabled = false; btn.textContent = 'Sign In →';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.doRegister = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!isConfigured()) { toast('Configure Firebase first!', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const name<span class="Apple-converted-space">  </span>= document.getElementById('regName').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const email = document.getElementById('regEmail').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const phone = document.getElementById('regPhone').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const role<span class="Apple-converted-space">  </span>= document.getElementById('regRole').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pass<span class="Apple-converted-space">  </span>= document.getElementById('regPass').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!name || !email || !pass) { toast('Fill in name, email and password', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = document.getElementById('registerBtn');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>btn.disabled = true; btn.textContent = 'Creating...';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const cred = await createUserWithEmailAndPassword(auth, email, pass);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const colorIdx = Math.floor(Math.random() * 6);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await setDoc(doc(db, 'users', cred.user.uid), {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>uid: cred.user.uid, name, email, phone: phone || '',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>role: role || 'Team Member', colorIdx,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>isAdmin: false, online: false,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>lastSeen: serverTimestamp(), createdAt: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(`Welcome, ${name}! Signing you in...`, 'success');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(e.code === 'auth/email-already-in-use' ? 'Email already registered' : e.message, 'error');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.disabled = false; btn.textContent = 'Create Account →';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.doLogout = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!currentUser) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const dur = Math.floor((new Date() - loginTime) / 1000);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>await addDoc(collection(db, 'sessions'), {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>userId: currentUser.uid, name: currentUser.name,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>loginAt: loginTime.toISOString(), duration: dur,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>date: loginTime.toLocaleDateString('en-IN'),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>createdAt: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>await updateDoc(doc(db, 'users', currentUser.uid), { online: false, lastSeen: serverTimestamp() });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(sessionInterval);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (unsubTasks) <span class="Apple-converted-space">  </span>unsubTasks();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (unsubMembers) unsubMembers();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>currentUser = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>await signOut(auth);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// APP</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">function showApp() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('loginView').classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('appView').classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>initApp();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function showLogin() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('appView').classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('loginView').classList.add('active');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function initApp() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const h = new Date().getHours();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('greetingTime').textContent<span class="Apple-converted-space">  </span>= h &lt; 12 ? 'morning' : h &lt; 17 ? 'afternoon' : 'evening';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('greetingName').textContent<span class="Apple-converted-space">  </span>= `Welcome back, ${currentUser.name}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('currentDate').textContent <span class="Apple-converted-space">  </span>=</p>
+<p class="p1"><span class="Apple-converted-space">    </span>new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('topbarAvatar').textContent<span class="Apple-converted-space">  </span>= currentUser.name.charAt(0).toUpperCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('topbarAvatar').className<span class="Apple-converted-space">    </span>= `avatar ${COLORS[currentUser.colorIdx % 6]}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('topbarName').textContent<span class="Apple-converted-space">    </span>= currentUser.name.split(' ')[0];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Default dates</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ds = tomorrow.toISOString().split('T')[0];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['q-date','m-date'].forEach(id =&gt; document.getElementById(id).value = ds);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['q-time','m-time'].forEach(id =&gt; document.getElementById(id).value = '09:00');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>startSessionTimer();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>subscribeRealtime();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function startSessionTimer() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(sessionInterval);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sessionInterval = setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const s = Math.floor((new Date() - loginTime) / 1000);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const m = Math.floor(s / 60);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('sessionTimer').textContent = `${m}:${(s%60).toString().padStart(2,'0')}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, 1000);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// REAL-TIME LISTENERS</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">function subscribeRealtime() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Tasks — live updates</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tq = query(collection(db, 'tasks'), orderBy('createdAt', 'desc'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>unsubTasks = onSnapshot(tq, snap =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>allTasks = snap.docs.map(d =&gt; ({ id: d.id, ...d.data() }));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderDashboard();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderAllTasks();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Users — live presence</p>
+<p class="p1"><span class="Apple-converted-space">  </span>unsubMembers = onSnapshot(collection(db, 'users'), snap =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>allMembers = snap.docs.map(d =&gt; ({ uid: d.id, ...d.data() }));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>populateAssigneeDropdowns();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderTeam();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderDashboard();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// TASKS</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">function populateAssigneeDropdowns() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const opts = '&lt;option value=""&gt;— Select member —&lt;/option&gt;' +</p>
+<p class="p1"><span class="Apple-converted-space">    </span>allMembers.map(u =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>`&lt;option value="${u.uid}"&gt;${u.name}${u.uid===currentUser.uid?' (You)':''}&lt;/option&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>).join('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['q-assignee','m-assignee'].forEach(id =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const el = document.getElementById(id);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (el) el.innerHTML = opts;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">window.assignTask = async (fromModal) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pfx = fromModal ? 'm' : 'q';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const title<span class="Apple-converted-space">      </span>= document.getElementById(`${pfx}-title`).value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const assigneeId = document.getElementById(`${pfx}-assignee`).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const priority <span class="Apple-converted-space">  </span>= document.getElementById(`${pfx}-priority`).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const date <span class="Apple-converted-space">      </span>= document.getElementById(`${pfx}-date`).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const time <span class="Apple-converted-space">      </span>= document.getElementById(`${pfx}-time`).value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const desc <span class="Apple-converted-space">      </span>= fromModal ? document.getElementById('m-desc').value.trim() : (document.getElementById('q-note')?.value?.trim() || '');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const channel<span class="Apple-converted-space">    </span>= fromModal ? document.getElementById('m-channel').value : 'whatsapp';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!title)<span class="Apple-converted-space">      </span>{ toast('Enter a task title!', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!assigneeId) { toast('Select who to assign to!', 'error'); return; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const assignee<span class="Apple-converted-space">    </span>= allMembers.find(u =&gt; u.uid === assigneeId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const dueDateTime = date &amp;&amp; time ? new Date(`${date}T${time}`).toISOString() : null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = document.getElementById(fromModal ? 'assignBtn' : 'assignBtn') || document.querySelector('.btn-assign');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await addDoc(collection(db, 'tasks'), {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>title, desc,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>assigneeId, assigneeName: assignee.name,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>assignedById: currentUser.uid, assignedByName: currentUser.name,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>priority, channel, dueDateTime,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>status: 'pending',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>createdAt: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Log alert</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await addDoc(collection(db, 'alerts'), {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>type: 'Task Assigned', from: currentUser.name, to: assignee.name,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>task: title, channel, time: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// WhatsApp</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const msg = `📌 *New Task from ${currentUser.name}*\n\n*Task:* ${title}${desc?`\n*Details:* ${desc}`:''}\n*Priority:* ${priority.toUpperCase()}\n*Due:* ${dueDateTime ? new Date(dueDateTime).toLocaleString('en-IN') : 'Flexible'}\n\nPlease confirm receipt. — WorkSync`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (assignee.phone) openWA(assignee.phone, msg);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(`Task assigned to ${assignee.name}!`, 'success');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById(`${pfx}-title`).value = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (fromModal) { document.getElementById('m-desc').value = ''; closeAssignModal(); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else if (document.getElementById('q-note')) document.getElementById('q-note').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast('Error saving task: ' + e.message, 'error');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.markDone = async (id) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = allTasks.find(t =&gt; t.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!t) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await updateDoc(doc(db, 'tasks', id), { status: 'done', doneAt: serverTimestamp() });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>await addDoc(collection(db, 'alerts'), {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>type: 'Task Done', from: currentUser.name, to: t.assignedByName,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>task: t.title, channel: 'system', time: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const assigner = allMembers.find(u =&gt; u.uid === t.assignedById);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (assigner &amp;&amp; assigner.phone) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const msg = `✅ *Task Completed!*\n\n${currentUser.name} completed: *${t.title}*\n\n— WorkSync`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>openWA(assigner.phone, msg);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast('Task marked as done!', 'success');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast('Error: ' + e.message, 'error');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.sendReminder = async (id) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = allTasks.find(t =&gt; t.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!t) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const assignee = allMembers.find(u =&gt; u.uid === t.assigneeId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!assignee) { toast('Member not found', 'error'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const msg = `🔔 *Reminder from ${currentUser.name}*\n\nPlease update on: *${t.title}*\nPriority: ${t.priority.toUpperCase()}${t.dueDateTime?'\nDue: '+new Date(t.dueDateTime).toLocaleString('en-IN'):''}\n\n— WorkSync`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (assignee.phone) openWA(assignee.phone, msg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>await addDoc(collection(db, 'alerts'), {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>type: 'Reminder Sent', from: currentUser.name, to: assignee.name,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>task: t.title, channel: 'whatsapp', time: serverTimestamp()</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>toast(`Reminder sent to ${assignee.name} via WhatsApp!`, 'wa');</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.deleteTask = async (id) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!confirm('Delete this task?')) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>await deleteDoc(doc(db, 'tasks', id));</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.filterAllTasks = (f, el) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>taskFilter = f;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.filter-btn').forEach(b =&gt; b.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAllTasks();</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// RENDER</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">function renderDashboard() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const myTasks = allTasks.filter(t =&gt; t.assigneeId === currentUser.uid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('s-total').textContent <span class="Apple-converted-space">  </span>= allTasks.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('s-urgent').textContent<span class="Apple-converted-space">  </span>= allTasks.filter(t =&gt; t.priority==='urgent' &amp;&amp; t.status!=='done').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('s-pending').textContent = allTasks.filter(t =&gt; t.status==='pending').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('s-done').textContent<span class="Apple-converted-space">    </span>= allTasks.filter(t =&gt; t.status==='done').length;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const urgentMine = myTasks.filter(t =&gt; t.priority==='urgent' &amp;&amp; t.status!=='done').slice(0,3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('myUrgentTasks').innerHTML = urgentMine.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? urgentMine.map(t =&gt; taskCardHTML(t)).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: `&lt;div class="empty-state" style="padding:20px;"&gt;&lt;span class="empty-icon"&gt;🎉&lt;/span&gt;&lt;div class="empty-title"&gt;No urgent tasks!&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const recent = myTasks.slice(0,4);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('myRecentTasks').innerHTML = recent.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? recent.map(t =&gt; taskCardHTML(t)).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: `&lt;div class="empty-state" style="padding:20px;"&gt;&lt;span class="empty-icon"&gt;📭&lt;/span&gt;&lt;div class="empty-title"&gt;No tasks yet&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const online = allMembers.filter(u =&gt; u.online &amp;&amp; u.uid !== currentUser.uid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('onlineTeamList').innerHTML = online.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? online.map(u =&gt; `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="avatar ${COLORS[u.colorIdx%6]}" style="width:30px;height:30px;border-radius:8px;font-size:0.72rem;"&gt;${u.name.charAt(0)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;&lt;div style="font-size:0.82rem;font-weight:600;"&gt;${u.name}&lt;/div&gt;&lt;div style="font-size:0.7rem;color:var(--muted);"&gt;${u.role}&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="online-dot online" style="margin-left:auto;"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;`).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: `&lt;div style="font-size:0.78rem;color:var(--muted);padding:8px 0;"&gt;No other members online.&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderAllTasks() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let filtered = allTasks;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (taskFilter==='mine')<span class="Apple-converted-space">    </span>filtered = allTasks.filter(t =&gt; t.assigneeId===currentUser.uid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else if (taskFilter==='urgent')<span class="Apple-converted-space">  </span>filtered = allTasks.filter(t =&gt; t.priority==='urgent' &amp;&amp; t.status!=='done');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else if (taskFilter==='pending') filtered = allTasks.filter(t =&gt; t.status==='pending');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else if (taskFilter==='done')<span class="Apple-converted-space">    </span>filtered = allTasks.filter(t =&gt; t.status==='done');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('allTasksList').innerHTML = filtered.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? filtered.map(t =&gt; taskCardHTML(t)).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: `&lt;div class="empty-state"&gt;&lt;span class="empty-icon"&gt;📭&lt;/span&gt;&lt;div class="empty-title"&gt;No tasks here&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function taskCardHTML(t) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isOverdue = t.dueDateTime &amp;&amp; new Date(t.dueDateTime) &lt; new Date() &amp;&amp; t.status!=='done';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const badgeClass = t.status==='done' ? 'badge-done' : isOverdue ? 'badge-overdue' : `badge-${t.priority}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const badgeLabel = t.status==='done' ? '✓ Done' : isOverdue ? '⚠ Overdue' : t.priority;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const due = t.dueDateTime ? new Date(t.dueDateTime).toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isMine <span class="Apple-converted-space">  </span>= t.assigneeId === currentUser.uid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isAuthor = t.assignedById === currentUser.uid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const canAct <span class="Apple-converted-space">  </span>= isMine || isAuthor || currentUser.isAdmin;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return `&lt;div class="task-card ${t.status==='done'?'done':t.priority}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="task-top"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="task-title-text"&gt;${t.title}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="badges"&gt;&lt;span class="badge ${badgeClass}"&gt;${badgeLabel}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${t.desc?`&lt;div style="font-size:0.77rem;color:var(--muted);margin-bottom:8px;line-height:1.4;"&gt;${t.desc}&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="task-meta"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;👤 ${t.assigneeName}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;📤 ${t.assignedByName}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${due?`&lt;span&gt;🗓 ${due}&lt;/span&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${canAct?`&lt;div class="task-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${t.status!=='done' &amp;&amp; isMine ? `&lt;button class="action-btn green" onclick="markDone('${t.id}')"&gt;✓ Done&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${t.status!=='done' ? `&lt;button class="action-btn wa" onclick="sendReminder('${t.id}')"&gt;💬 Remind&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${isAuthor||currentUser.isAdmin ? `&lt;button class="action-btn red" onclick="deleteTask('${t.id}')"&gt;✕&lt;/button&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;`;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderTeam() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('teamCount').textContent = `${allMembers.length} member${allMembers.length!==1?'s':''} registered`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('teamGrid').innerHTML = allMembers.map(u =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const uTasks <span class="Apple-converted-space">  </span>= allTasks.filter(t =&gt; t.assigneeId===u.uid);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const done <span class="Apple-converted-space">    </span>= uTasks.filter(t =&gt; t.status==='done').length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pend <span class="Apple-converted-space">    </span>= uTasks.filter(t =&gt; t.status==='pending').length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const urg<span class="Apple-converted-space">      </span>= uTasks.filter(t =&gt; t.priority==='urgent' &amp;&amp; t.status!=='done').length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const lastSeen = u.lastSeen?.toDate ? u.lastSeen.toDate() : (u.lastSeen ? new Date(u.lastSeen) : null);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `&lt;div class="member-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="member-top"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="avatar-lg ${COLORS[u.colorIdx%6]}"&gt;${u.name.charAt(0)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;&lt;div class="member-name"&gt;${u.name}&lt;/div&gt;&lt;div class="member-role"&gt;${u.role}${u.isAdmin?' · Admin':''}&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="online-indicator"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="online-dot ${u.online?'online':''}"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${u.online ? 'Online now' : lastSeen ? 'Last seen: '+lastSeen.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : 'Never logged in'}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="member-stats"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ms"&gt;&lt;div class="ms-val"&gt;${pend}&lt;/div&gt;&lt;div class="ms-lbl"&gt;Pending&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ms"&gt;&lt;div class="ms-val" style="color:var(--red)"&gt;${urg}&lt;/div&gt;&lt;div class="ms-lbl"&gt;Urgent&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ms"&gt;&lt;div class="ms-val" style="color:var(--green)"&gt;${done}&lt;/div&gt;&lt;div class="ms-lbl"&gt;Done&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${u.phone</p>
+<p class="p1"><span class="Apple-converted-space">        </span>? `&lt;button class="wa-btn" onclick="openWA('${u.phone}','Hi ${u.name.split(' ')[0]}! 👋')"&gt;💬 WhatsApp ${u.name.split(' ')[0]}&lt;/button&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">        </span>: `&lt;div style="font-size:0.72rem;color:var(--muted);text-align:center;padding:6px;"&gt;No WhatsApp number set&lt;/div&gt;`}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">window.renderActivity = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Sessions</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sSnap = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(m =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>m.getDocs(m.query(collection(db,'sessions'), orderBy('createdAt','desc'), m.limit(20)))</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const rows = sSnap.docs.map(d =&gt; d.data());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('sessionTableBody').innerHTML = rows.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? rows.map(s =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const m2 = Math.floor(s.duration/60), s2 = s.duration%60;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const memberColor = allMembers.find(u=&gt;u.uid===s.userId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return `&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;td&gt;&lt;div style="display:flex;align-items:center;gap:8px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="avatar ${memberColor?COLORS[memberColor.colorIdx%6]:'c0'}" style="width:28px;height:28px;border-radius:7px;font-size:0.7rem;"&gt;${s.name.charAt(0)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>${s.name}&lt;/div&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;td&gt;${s.loginAt ? new Date(s.loginAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : '—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;td style="color:var(--accent2)"&gt;${m2}m ${s2}s&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;td style="color:var(--muted)"&gt;${s.date||'—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: '&lt;tr&gt;&lt;td colspan="4" style="text-align:center;color:var(--muted);padding:24px;"&gt;No sessions yet&lt;/td&gt;&lt;/tr&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Alerts</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const { getDocs, query: q2, limit } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const aSnap = await getDocs(q2(collection(db,'alerts'), orderBy('time','desc'), limit(30)));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const aList = aSnap.docs.map(d =&gt; d.data());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const icons = {'Task Assigned':'📋','Task Done':'✅','Reminder Sent':'🔔'};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('activityList').innerHTML = aList.length</p>
+<p class="p1"><span class="Apple-converted-space">    </span>? aList.map(a =&gt; `&lt;div class="activity-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="activity-icon" style="background:rgba(59,130,246,0.1);"&gt;${icons[a.type]||'📢'}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="flex:1;font-size:0.8rem;line-height:1.4;"&gt;&lt;strong style="color:var(--accent2)"&gt;${a.from}&lt;/strong&gt; → &lt;strong style="color:var(--accent2)"&gt;${a.to}&lt;/strong&gt;: ${a.type} — "${a.task}"&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="activity-time"&gt;${a.time?.toDate ? a.time.toDate().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : '—'}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`).join('')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>: `&lt;div class="empty-state"&gt;&lt;span class="empty-icon"&gt;📭&lt;/span&gt;&lt;div class="empty-title"&gt;No activity yet&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// TABS</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">window.switchTab = (tab, el) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-tab').forEach(t =&gt; t.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.tab-content').forEach(t =&gt; t.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(`.nav-tab`).forEach(t =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (t.getAttribute('onclick')?.includes(`'${tab}'`)) t.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById(`tab-${tab}`).classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (tab === 'activity') window.renderActivity();</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.openAssignModal<span class="Apple-converted-space">  </span>= () =&gt; document.getElementById('assignModal').classList.add('open');</p>
+<p class="p1">window.closeAssignModal = () =&gt; document.getElementById('assignModal').classList.remove('open');</p>
+<p class="p2"><br></p>
+<p class="p1">window.openWA = (phone, msg) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const clean = phone.replace(/\D/g,'');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, '_blank');</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">// ============================================================</p>
+<p class="p1">// TOASTS</p>
+<p class="p1">// ============================================================</p>
+<p class="p1">window.toast = (msg, type='default') =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const stack = document.getElementById('toastStack');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const el<span class="Apple-converted-space">    </span>= document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.className = `toast ${type}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const icons<span class="Apple-converted-space">  </span>= {success:'✅',error:'❌',wa:'💬',default:'📌'};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const titles = {success:'Success',error:'Error',wa:'WhatsApp',default:'Info'};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.innerHTML = `&lt;div class="toast-title"&gt;${icons[type]} ${titles[type]}&lt;/div&gt;${msg}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>stack.appendChild(el);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; el.remove(), 4200);</p>
+<p class="p1">};</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
